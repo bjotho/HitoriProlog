@@ -47,4 +47,3 @@ solveProblems(N):- N>0, readProblem(X, Y, I), doSolve(X, Y, I, S), writeFullOutp
 :- nl,nl,write(' try running "?- run."'), nl,nl,nl.
 
 :- run.
-:- halt.
