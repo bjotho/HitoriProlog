@@ -3,6 +3,12 @@ mergeing([H|T], Color, [H,C|R]):-
 mergeing([], Color, Color):- !.
 mergeing(T, [], T).
 
+sublist(List, Offset, Length, Sublist):-
+  length(Prefix, Offset),
+  append(Prefix, Rest, List),
+  length(Sublist, Length),
+  append(Sublist, _, Rest).
+
 settingColor([N1,A,N2,B,N3,C,N4,D,
 		      N5,E,N6,F,N7,G,N8,H,
               N9,I,N10,J,N11,K,N12,L,
@@ -20,5 +26,6 @@ run:-
     flatten(X,Flat),
     mergeing(Flat,Color,M),
     settingColor(M),
-    write(M).
+    sublist(M,2,2,P),
+    write(P).
 
