@@ -2,10 +2,10 @@ outputFile('./hitori_solved.txt').
 inputFile('./hitori_unsolved.txt').
 
 
-addingVariable([],C,[]).
-addingVariable([H|T],C,[X|Y]):-
-    X=[H,C],
-    addingVariable(T,C,Y).
+addingVariable([],_,[]).
+addingVariable([H|T],_,[X|Y]):-
+    X=[H,_],
+    addingVariable(T,_,Y).
 
 addingRow([],[]).
 addingRow([H1,H2,H3,H4,H5|T],[X|Y]):-
@@ -15,26 +15,66 @@ addingRow([H1,H2,H3,H4,H5,H6,H7|T],[X|Y]):-
     X=[H1,H2,H3,H4,H5,H6,H7],
     addingRow(T,Y).
 
+twoPlussMany([X,Y|[H|T]]):-
+    write('twoPlussMany'),nl,
+    write(X),write(' '),write(Y),write(' '),write(H),write(' '),write(T), nl,
+    X=Y,
+    not(X=H),
+    list_to_set(T, S),
+    write(S), nl,
+    member(X,S),
+    x='Black';
+    twoPlussMany([Y,H|T]).
+
+twoPlussManyRev(L):-
+    write('twoPlussManyRev'),nl,
+    reverse(L, N),
+    twoPlussMany(N).
+
+containsDuplicates([H|T]):-
+    member(H,T), H=[_,'Black'];
+    containsDuplicates(T).
+
+xSomethingX([X,Y,Z|[H|T]]):-
+    (X=Z,Y=[_,'White']);
+    xSomethingX([Y,Z,H|T]).
+xSomethingX([X,Y,X]):-
+    Y=[_,'White'].
+
+checkTests([]).
+checkTests([H|T]):-
+    xSomethingX(H);
+    checkTests(T).
+
+setC([]).
+setC([H|T]):-
+    H=[_,'White'],
+    setC(T).
 
 settingColor([[N1,A],[N2,B],[N3,C],[N4,D],
 		      [N5,E],[N6,F],[N7,G],[N8,H],
               [N9,I],[N10,J],[N11,K],[N12,L],
               [N13,M],[N14,N],[N15,O],[N16,P]]):-
     
-    /*pre(A,B,C,D), pre(E,F,G,H), pre(I,J,K,L), pre(M,N,O,P),
-    pre(A,E,I,M), pre(B,F,J,N), pre(C,G,K,O), pre(D,H,L,P).*/
-    pre(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P).
+    color(A,B,C,D)
 
-pre(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P):-
-    member('Black',[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P]).
-    %member('White',[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P]).
+
+color(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P):-
+    member('Black',[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P]),
+    member('White',[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P]).
 
 
 doSolve(SizeX,SizeY,Input,Output):-
     flatten(Input,Flat),
+    write(Flat).
+    /*
     addingVariable(Flat,Color,L),
+    setC(L),
+    write(L).
+    
     addingRow(L,R),
-    write(R).
+    checkTests(R),
+    write(R).*/
     
 
 
