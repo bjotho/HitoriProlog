@@ -1,12 +1,47 @@
 outputFile('./hitori_solved.txt').
 inputFile('./hitori_unsolved.txt').
 
-/********************* dummy solution algorithms -> fill your correct algorithm here */
-/* doSolve(SizeX,SizeY,Input,Output) */
-doSolve(5,_,_,[[1,'X',3,'X',5],[4,1,5,3,2],[2,'X',1,'X',3],[5,3,'X',1,4],[3,'X',4,5,'X']]):-!.
-doSolve(7,_,_,[['X',4,1,'X',6,5,'X'],[6,'X',3,5,'X',1,4],[5,3,'X',1,2,'X',6],['X',7,6,'X',1,2,5],[4,'X',7,2,'X',6,'X'],[1,6,2,7,5,4,3],[7,'X',5,'X',4,'X',2]]):-!.
 
-doSolve(_,_,Solution,Solution).
+addingVariable([],C,[]).
+addingVariable([H|T],C,[X|Y]):-
+    X=[H,C],
+    addingVariable(T,C,Y).
+
+addingRow([],[]).
+addingRow([H1,H2,H3,H4,H5|T],[X|Y]):-
+    X=[H1,H2,H3,H4,H5],
+    addingRow(T,Y).
+addingRow([H1,H2,H3,H4,H5,H6,H7|T],[X|Y]):-
+    X=[H1,H2,H3,H4,H5,H6,H7],
+    addingRow(T,Y).
+
+
+settingColor([[N1,A],[N2,B],[N3,C],[N4,D],
+		      [N5,E],[N6,F],[N7,G],[N8,H],
+              [N9,I],[N10,J],[N11,K],[N12,L],
+              [N13,M],[N14,N],[N15,O],[N16,P]]):-
+    
+    /*pre(A,B,C,D), pre(E,F,G,H), pre(I,J,K,L), pre(M,N,O,P),
+    pre(A,E,I,M), pre(B,F,J,N), pre(C,G,K,O), pre(D,H,L,P).*/
+    pre(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P).
+
+pre(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P):-
+    member('Black',[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P]).
+    %member('White',[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P]).
+
+
+doSolve(SizeX,SizeY,Input,Output):-
+    flatten(Input,Flat),
+    addingVariable(Flat,Color,L),
+    addingRow(L,R),
+    write(R).
+    
+
+
+/*doSolve(5,_,_,[[1,'X',3,'X',5],[4,1,5,3,2],[2,'X',1,'X',3],[5,3,'X',1,4],[3,'X',4,5,'X']]):-!.
+doSolve(7,_,_,[['X',4,1,'X',6,5,'X'],[6,'X',3,5,'X',1,4],[5,3,'X',1,2,'X',6],['X',7,6,'X',1,2,5],[4,'X',7,2,'X',6,'X'],[1,6,2,7,5,4,3],[7,'X',5,'X',4,'X',2]]):-!.*/
+
+%doSolve(_,_,Solution,Solution).
 
 /********************* writing the result */
 writeFullOutput(S, X, Y):- write(X), write('x'), write(Y), nl, writeOutput(S).
