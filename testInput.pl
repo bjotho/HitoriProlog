@@ -1,23 +1,7 @@
-mergeing([H|T], Color, [H,C|R]):-
-    mergeing(T, Color, R).
-mergeing([], Color, Color):- !.
-mergeing(T, [], T).
-
-sublist(List, Offset, Length, Sublist):-
-  length(Prefix, Offset),
-  append(Prefix, Rest, List),
-  length(Sublist, Length),
-  append(Sublist, _, Rest).
-
 addingVariable([],C,[]).
 addingVariable([H|T],C,[X|Y]):-
     append([H,C],[],X),
     addingVariable(T,C,Y).
-
-choppinglist([],[X|Y]]).
-choppinglist([H1,H2|T],[X|Y]):-
-    append([H1,H2],[],X),
-    choppinglist(T,Y).
 
 settingColor([[N1,A],[N2,B],[N3,C],[N4,D],
 		      [N5,E],[N6,F],[N7,G],[N8,H],
@@ -28,20 +12,12 @@ settingColor([[N1,A],[N2,B],[N3,C],[N4,D],
     pre(A,E,I,M), pre(B,F,J,N), pre(C,G,K,O), pre(D,H,L,P).
 
 pre(A,B,C,D):-
-    member('Black',[A,B,C,D]), member('White',[A,B,C,D]).
+    member('Black',[A,B,C,D]). %member('White',[A,B,C,D]).
 
 
 run:-
     X=[[1,1,1,1],[2,2,2,2],[3,3,3,3],[4,4,4,4]],
     flatten(X,Flat),
     addingVariable(Flat,Color,L),
+    settingColor(L),
     write(L).
-    /*
-    mergeing(Flat,Color,M),
-    write(M).
-    
-    settingColor(M),
-    choppinglist(M, L),
-    write(L),
-    write(P).*/
-
