@@ -2,6 +2,7 @@ outputFile('./hitori_solved.txt').
 inputFile('./hitori_unsolved.txt').
 
 
+<<<<<<< HEAD
 parsingInput([],[],_).
 parsingInput([H|T],[X|Y],I):-
     addingSquares(H,X,I),
@@ -26,6 +27,20 @@ extractRow([H|T],[X|Y]):-
     X=V);
     X='X'),
     extractRow(T,Y).
+=======
+addingVariable([],[]).
+addingVariable([H|T],[X|Y]):-
+    X=[H,_],
+    addingVariable(T,Y).
+
+addingRow([],[]).
+addingRow([H1,H2,H3,H4,H5|T],[X|Y]):-
+    X=[H1,H2,H3,H4,H5],
+    addingRow(T,Y).
+addingRow([H1,H2,H3,H4,H5,H6,H7|T],[X|Y]):-
+    X=[H1,H2,H3,H4,H5,H6,H7],
+    addingRow(T,Y).
+>>>>>>> Change in addingVariable
 
 twoPlussMany([X,Y|[H|T]]):-
     write('twoPlussMany'),nl,
@@ -71,6 +86,7 @@ color(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P):-
 
 
 doSolve(SizeX,SizeY,Input,Output):-
+<<<<<<< HEAD
     /*parsingInput takes in a list (Input), and binds SquareList to a list of squares. Final parameter is the starting index*/
     %parsingInput(Input,SquareList,1),
     %write(SquareList).
@@ -82,6 +98,14 @@ doSolve(SizeX,SizeY,Input,Output):-
                    [[3,'W',13],[4,'B',14],[1,'W',15],[2,'W',16]]],
     formatOutput(ExampleSolved,Output).
     %print(Output).
+=======
+    flatten(Input,Flat),
+    write(Flat).
+    /*
+    addingVariable(Flat,L),
+    setC(L),
+    write(L).
+>>>>>>> Change in addingVariable
     
     %addingRow(L,SquareList),
     %checkTests(SquareList),
