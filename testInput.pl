@@ -53,7 +53,8 @@ settingColor([[[N1,C1],[N2,C2],[N3,C3],[N4,C4],[N5,C5]],
 
 checkAll(List):-
     settingColor(List),
-    getRow(List).
+    getRow(List),
+    write(List).
 
 
 
@@ -70,14 +71,13 @@ checkNumbers([H|T],[X|Y]):-
 getSquares([X]).
 getSquares([H1,H2|T]):-
     checkColor(H1,H2),
-    checkNumbers(H1,H2),
+    %checkNumbers(H1,H2),
     getSquares([H2|T]).
 
 getRow([]).
 getRow([H|T]):-
     getSquares(H),
     getRow(T).
-
 
 color(A,B,C,D,E):-
     member('Black',[A,B,C,D,E]),
