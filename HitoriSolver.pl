@@ -2,18 +2,18 @@ outputFile('./hitori_solved.txt').
 inputFile('./hitori_unsolved.txt').
 
 
-addingVariable([],_,[]).
-addingVariable([H|T],_,[X|Y]):-
-    X=[H,_],
-    addingVariable(T,_,Y).
+addingVariable([],_,_).
+addingVariable([H|T],[X|Y],I):-
+    addingRow(H,X,I),
+    length(H,Size),
+    I1 is I+Size,
+    addingVariable(T,Y,I1).
 
-addingRow([],[]).
-addingRow([H1,H2,H3,H4,H5|T],[X|Y]):-
-    X=[H1,H2,H3,H4,H5],
-    addingRow(T,Y).
-addingRow([H1,H2,H3,H4,H5,H6,H7|T],[X|Y]):-
-    X=[H1,H2,H3,H4,H5,H6,H7],
-    addingRow(T,Y).
+addingRow([],_,_).
+addingRow([H|T],[X|Y],I):-
+    X=[H,_,I],
+    I1 is I+1,
+    addingRow(T,Y,I1).
 
 twoPlussMany([X,Y|[H|T]]):-
     write('twoPlussMany'),nl,
@@ -23,16 +23,15 @@ twoPlussMany([X,Y|[H|T]]):-
     list_to_set(T, S),
     write(S), nl,
     member(X,S),
-    x='Black';
     twoPlussMany([Y,H|T]).
 
 twoPlussManyRev(L):-
     write('twoPlussManyRev'),nl,
-    reverse(L, N),
+    reverse(L,N),
     twoPlussMany(N).
 
 containsDuplicates([H|T]):-
-    member(H,T), H=[_,'Black'];
+    member(H,T),
     containsDuplicates(T).
 
 xSomethingX([X,Y,Z|[H|T]]):-
@@ -46,17 +45,12 @@ checkTests([H|T]):-
     xSomethingX(H);
     checkTests(T).
 
-setC([]).
-setC([H|T]):-
-    H=[_,'White'],
-    setC(T).
-
 settingColor([[N1,A],[N2,B],[N3,C],[N4,D],
 		      [N5,E],[N6,F],[N7,G],[N8,H],
               [N9,I],[N10,J],[N11,K],[N12,L],
               [N13,M],[N14,N],[N15,O],[N16,P]]):-
     
-    color(A,B,C,D)
+    color(A,B,C,D).
 
 
 color(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P):-
@@ -65,16 +59,12 @@ color(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P):-
 
 
 doSolve(SizeX,SizeY,Input,Output):-
-    flatten(Input,Flat),
-    write(Flat).
-    /*
-    addingVariable(Flat,Color,L),
-    setC(L),
-    write(L).
+    addingVariable(Input,SquareList,1),
+    write(SquareList).
     
-    addingRow(L,R),
-    checkTests(R),
-    write(R).*/
+    %addingRow(L,SquareList),
+    %checkTests(SquareList),
+    %write(SquareList).
     
 
 
