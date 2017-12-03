@@ -26,15 +26,25 @@ settingColor([[[N1,C1],[N2,C2],[N3,C3],[N4,C4],[N5,C5]],
     color(C4,C9,C14,C19,C24),
     color(C5,C10,C15,C25,C25).
 
-getSquares([]).
-getSquares([H1,H2|T1,T2]):-
-    write('2squares:'),write(H1),write(H2),nl,
-    getSquares([T1|T2]).
+
+check([],[]).
+check([H|T],[X|Y]):-
+    T=['Black'],Y=['White'];
+    T=['White'],Y=['Black'];
+    T=['White'],T=Y.
+
+getSquares([X]).
+getSquares([H1,H2|T]):-
+    check(H1,H2);
+    getSquares([H2|T]).
 
 getRow([]).
 getRow([H|T]):-
     getSquares(H),
     getRow(T).
+
+
+
 
     /*checkBoard(N1,N2,C1,C2),
     checkBoard(N2,N3,C2,C3),
