@@ -2,14 +2,14 @@ outputFile('./hitori_solved.txt').
 inputFile('./hitori_unsolved.txt').
 
 
-addingVariable([],_,_).
+addingVariable([],[],_).
 addingVariable([H|T],[X|Y],I):-
     addingRow(H,X,I),
     length(H,Size),
     I1 is I+Size,
     addingVariable(T,Y,I1).
 
-addingRow([],_,_).
+addingRow([],[],_).
 addingRow([H|T],[X|Y],I):-
     X=[H,_,I],
     I1 is I+1,
