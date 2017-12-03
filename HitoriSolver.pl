@@ -78,8 +78,8 @@ doSolve(SizeX,SizeY,Input,Output):-
                    [[1,'W',5],[4,'W',6],[2,'W',7],[3,'W',8]],
                    [[2,'W',9],[3,'W',10],[2,'B',11],[1,'W',12]],
                    [[3,'W',13],[4,'B',14],[1,'W',15],[2,'W',16]]],
-    formatOutput(ExampleSolved,Output),
-    print(Output).
+    formatOutput(ExampleSolved,Output).
+    %print(Output).
     
     %addingRow(L,SquareList),
     %checkTests(SquareList),
