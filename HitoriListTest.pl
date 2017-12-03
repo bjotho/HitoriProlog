@@ -27,9 +27,9 @@ write('containsDuplicates'),nl,
 member(H,T);
 containsDuplicates(T).
 
-xSomethingX([X,Y,X|_]).
+
 xSomethingX([X,Y,Z|[H|T]]):-
-write('xSomethingX'),nl,
+write('xSomethingX'),nl,xSomethingX([X,Y,X|_]).
 write(X),write(' '),write(Y),write(' '),write(Z),write(' '),write(H),write(' '),write(T), nl,
 xSomethingX([Y,Z,H|T]).
 

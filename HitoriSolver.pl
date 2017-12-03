@@ -100,9 +100,9 @@ doSolve(SizeX,SizeY,Input,Output):-
     %print(Output).
 =======
     flatten(Input,Flat),
-    write(Flat).
-    /*
     addingVariable(Flat,L),
+    write(L).
+    /*        
     setC(L),
     write(L).
 >>>>>>> Change in addingVariable
