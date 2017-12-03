@@ -26,26 +26,6 @@ settingColor([[[N1,C1],[N2,C2],[N3,C3],[N4,C4],[N5,C5]],
     color(C4,C9,C14,C19,C24),
     color(C5,C10,C15,C25,C25).
 
-
-check([],[]).
-check([H|T],[X|Y]):-
-    T=['Black'],Y=['White'];
-    T=['White'],Y=['Black'];
-    T=['White'],T=Y.
-
-getSquares([X]).
-getSquares([H1,H2|T]):-
-    check(H1,H2);
-    getSquares([H2|T]).
-
-getRow([]).
-getRow([H|T]):-
-    getSquares(H),
-    getRow(T).
-
-
-
-
     /*checkBoard(N1,N2,C1,C2),
     checkBoard(N2,N3,C2,C3),
     checkBoard(N3,N4,C3,C4),
@@ -71,6 +51,34 @@ getRow([H|T]):-
     checkBoard(N23,N24,C23,C24),
     checkBoard(N24,N25,C24,C25).*/
 
+checkAll(List):-
+    settingColor(List),
+    getRow(List).
+
+
+
+checkColor([],[]).
+checkColor([H|T],[X|Y]):-
+    T=['Black'],Y=['White'];
+    T=['White'],Y=['Black'];
+    T=['White'],T=Y.
+
+checkNumbers([],[]).
+checkNumbers([H|T],[X|Y]):-
+    write(H).
+
+getSquares([X]).
+getSquares([H1,H2|T]):-
+    checkColor(H1,H2),
+    checkNumbers(H1,H2),
+    getSquares([H2|T]).
+
+getRow([]).
+getRow([H|T]):-
+    getSquares(H),
+    getRow(T).
+
+
 color(A,B,C,D,E):-
     member('Black',[A,B,C,D,E]),
     member('White',[A,B,C,D,E]).
@@ -83,10 +91,15 @@ checkBoard(A,B,C,D):-
     not(A=B),not(C=D);
     not(A=B),C=D.
 
+    
+
 run:-
     X=[[1,3,3,5,5],[4,1,5,3,2],[2,1,1,3,3],[5,3,4,1,4],[3,3,4,5,4]],
     flatten(X,Flat),
     addingVariable(Flat,L),
     addingRow(L,R),
-    settingColor(R),
-    getRow(R).
+    checkAll(R).
+    /*
+    addingRow(L,R),
+    settingColor(R).
+    getRow(R).*/
