@@ -22,7 +22,9 @@ formatOutput([H|T],[X|Y]):-
 
 extractRow([],[]).
 extractRow([H|T],[X|Y]):-
-    (H=[V,'W',_] -> X=V ; X='X'),
+    ((H=[V,'W',_],
+    X=V);
+    X='X'),
     extractRow(T,Y).
 
 twoPlussMany([X,Y|[H|T]]):-
