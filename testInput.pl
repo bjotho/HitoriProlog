@@ -19,9 +19,9 @@ addColor([H|T]):-
 
 checkColor([],[]).
 checkColor([H1,H2|T],[X1,X2|Y]):-
-    H2=['Black'],X2=['White'];
-    H2=['White'],X2=['Black'];
-    H2=['White'],H2=X2.
+    H2='Black',X2='White';
+    H2='White',X2='Black';
+    H2='White',H2=X2.
 
 getSquares([X]).
 getSquares([H1,H2|T]):-
