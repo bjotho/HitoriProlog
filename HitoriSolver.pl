@@ -56,30 +56,56 @@ checkTests([H|T]):-
     xSomethingX(H);
     checkTests(T).
 
-settingColor([[N1,A],[N2,B],[N3,C],[N4,D],
-		      [N5,E],[N6,F],[N7,G],[N8,H],
-              [N9,I],[N10,J],[N11,K],[N12,L],
-              [N13,M],[N14,N],[N15,O],[N16,P]]):-
+checkColor([],[],5).
+checkColor([H1,H2,H3|T],[X1,X2,X3|Y],5):-
+    /*Check rows*/
+    H1=X1,
+    (H2='B',X2='W';
+    H2='W',X2='B';
+    H2='W',H2=X2);
+    not(H1=X1),
+    (H2='B',X2='W';
+    H2='W',X2='B';
+    H2='W',H2=X2).
+    /*Check columns*/
+
+checkRow([]).
+checkRow([[H|R]|T]):-
+    member(H,T);
+    checkRow([R|T]).
     
-    color(A,B,C,D).
+getSquares([X]).
+getSquares([H1,H2|T]):-
+    checkColor(H1,H2,5),
+    getSquares([H2|T]).
 
+getRow([]).
+getRow([H|T]):-
+    getSquares(H),
+    getRow(T).
 
-color(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P):-
-    member('B',[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P]),
-    member('W',[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P]).
+getCol([]).
+getCol([H|T]):-
+    write(H).
+
+checkAll(List):-
+    %getRow(List),
+    getCol(List).
 
 
 doSolve(SizeX,SizeY,Input,Output):-
     /*parsingInput takes in a list (Input), and binds SquareList to a list of squares. Final parameter is the starting index*/
-    %parsingInput(Input,SquareList,1),
-    %write(SquareList).
+    parsingInput(Input,SquareList,1),
+    checkAll(SquareList),
+    formatOutput(SquareList,Output),
+    write(Output).
 
     /*formatOutput takes in a solved hitori puzzle list and generates output in the desired format*/
-    ExampleSolved=[[[2,'B',1],[2,'W',2],[2,'B',3],[4,'W',4]],
+    /*ExampleSolved=[[[2,'B',1],[2,'W',2],[2,'B',3],[4,'W',4]],
                    [[1,'W',5],[4,'W',6],[2,'W',7],[3,'W',8]],
                    [[2,'W',9],[3,'W',10],[2,'B',11],[1,'W',12]],
                    [[3,'W',13],[4,'B',14],[1,'W',15],[2,'W',16]]],
-    formatOutput(ExampleSolved,Output).
+    formatOutput(ExampleSolved,Output).*/
     %print(Output).
     
     %addingRow(L,SquareList),
