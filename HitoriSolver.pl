@@ -54,17 +54,33 @@ xSomethingX([X,Y,Z|_]):-
 	getHead(X,S1),
 	getHead(Z,S2),
     S1=S2,Y=[_,'W',_].
-xSomethingX([X,Y,Z|[H|T]]):-
+xSomethingX([_,Y,Z|[H|T]]):-
     xSomethingX([Y,Z,H|T]).
 
 
-checkTests([]).
-checkTests([H|T]):-
+checkxSomethingX([]).
+checkxSomethingX([H|T]):-
     (xSomethingX(H),
-    checkTests(T));
+    checkxSomethingX(T));
     (xSomethingX(H);
-    checkTests(T)).
+    checkxSomethingX(T)).
 
+rowN([H|_],1,H):-!.
+rowN([_|T],I,X):-
+    I1 is I-1,
+    rowN(T,I1,X).
+
+columnN([],_,[]).
+columnN([H|T],I,[R|X]):-
+	rowN(H,I,R), 
+	columnN(T,I,X).
+
+getAllColumns(Size,_,N,[]):-
+	N>Size.
+getAllColumns(Size,SquareList,N,[H|T]):-
+	columnN(SquareList,N,H),
+	N1 is N+1,
+	getAllColumns(Size,SquareList,N1,T).
 
 doSolve(SizeX,SizeY,Input,Output):-
     /*parsingInput takes in a list (Input), and binds SquareList to a list of squares. Final parameter is the starting index*/
@@ -75,7 +91,9 @@ doSolve(SizeX,SizeY,Input,Output):-
                      [[2,_,9],[3,_,10],[2,_,11],[1,_,12]],
                      [[3,_,13],[4,_,14],[1,_,15],[2,_,16]]],
 
-    checkTests(ExampleUnsolved),
+    checkxSomethingX(ExampleUnsolved),
+    getAllColumns(4,ExampleUnsolved,1,Cols),
+    print(Cols).
 
     /*formatOutput takes in a solved hitori puzzle list and generates output in the desired format*/
     /*
