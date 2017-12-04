@@ -1,7 +1,6 @@
 outputFile('./hitori_solved.txt').
 inputFile('./hitori_unsolved.txt').
 
-Attempted to run xSomethingX. It went horribly wrong :(
 parsingInput([],[],_).
 parsingInput([H|T],[X|Y],I):-
     addingSquares(H,X,I),
