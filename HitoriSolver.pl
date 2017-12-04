@@ -92,14 +92,16 @@ doSolve(SizeX,SizeY,Input,Output):-
 
     checkxSomethingX(ExampleUnsolved),
     getAllColumns(4,ExampleUnsolved,1,Cols),
-    print(Cols).
+    checkxSomethingX(Cols),
+    getAllColumns(4,Cols,1,BackToRows),
 
     /*formatOutput takes in a solved hitori puzzle list and generates output in the desired format*/
     /*
     ExampleSolved=[[[2,'B',1],[2,'W',2],[2,'B',3],[4,'W',4]],
                    [[1,'W',5],[4,'W',6],[2,'W',7],[3,'W',8]],
                    [[2,'W',9],[3,'W',10],[2,'B',11],[1,'W',12]],
-                   [[3,'W',13],[4,'B',14],[1,'W',15],[2,'W',16]]],
+                   [[3,'W',13],[4,'B',14],[1,'W',15],[2,'W',16]]],*/
+    formatOutput(BackToRows,Output).
 
 /*doSolve(5,_,_,[[1,'X',3,'X',5],[4,1,5,3,2],[2,'X',1,'X',3],[5,3,'X',1,4],[3,'X',4,5,'X']]):-!.
 doSolve(7,_,_,[['X',4,1,'X',6,5,'X'],[6,'X',3,5,'X',1,4],[5,3,'X',1,2,'X',6],['X',7,6,'X',1,2,5],[4,'X',7,2,'X',6,'X'],[1,6,2,7,5,4,3],[7,'X',5,'X',4,'X',2]]):-!.*/
