@@ -1,105 +1,87 @@
-addingVariable([],[]).
-addingVariable([H|T],[X|Y]):-
-    X=[H,_],
-    addingVariable(T,Y).
+parsingInput([],[],_).
+parsingInput([H|T],[X|Y],I):-
+    addingSquares(H,X,I),
+    length(H,Size),
+    I1 is I+Size,
+    parsingInput(T,Y,I1).
 
-addingRow([],[]).
-addingRow([H1,H2,H3,H4,H5|T],[X|Y]):-
-    X=[H1,H2,H3,H4,H5],
-    addingRow(T,Y).
+addingSquares([],[],_).
+addingSquares([H|T],[X|Y],I):-
+    X=[H,_,I],
+    I1 is I+1,
+    addingSquares(T,Y,I1).
 
+getHead([H|_],R):-
+    R=H.
 
-settingColor([[[N1,C1],[N2,C2],[N3,C3],[N4,C4],[N5,C5]],
-		      [[N6,C6],[N7,C7],[N8,C8],[N9,C9],[N10,C10]],
-              [[N11,C11],[N12,C12],[N13,C13],[N14,C14],[N15,C15]],
-              [[N16,C16],[N17,C17],[N18,C18],[N19,C19],[N20,C20]],
-              [[N21,C21],[N22,C22],[N23,C23],[N24,C24],[N25,C25]]]):-
+getColor([H1,H2,H3],R):-
+    R=H2.
+
+containsDuplicates([]).
+containsDuplicates([H|T]):-
+    getHead(H,R),
+    (member([R,'W',_],T),H=[_,'B',_];
+    member([R,'B',_],T),H=[_,'W',_];
+    not(member([R,_,_],T)),H=[_,'W',_]),
+    containsDuplicates(T).
+
+neighborBlack([],[],[]).
+neighborBlack([H1,H2,H3],[X1,X2,X3],[Z1,Z2,Z3]):-
+    H2='W',X2='B',Z2='W';
+    H2='W',X2='W',Z2='B';
+    H2='B',X2='W',Z2='B';
+    H2='B',X2='W',Z2='W';
+    H2='W',X2='W',Z2='W'.
+
+setColors([],[],[]).
+setColors([H1,H2,H3|T],[X1,X2,X3|Y],[Z1,Z2,Z3]):-
+    (H2='B';H2='W'),
+    (X2='B';X2='W'),
+    (Z2='B';Z2='W').
     
-    color(C1,C2,C3,C4,C5),
-    color(C6,C7,C8,C9,C10),
-    color(C11,C12,C13,C14,C15),
-    color(C16,C17,C18,C19,C20),
-    color(C21,C22,C23,C24,C25),
-    color(C1,C6,C11,C16,C21),
-    color(C2,C7,C12,C17,C22),
-    color(C3,C8,C13,C18,C23),
-    color(C4,C9,C14,C19,C24),
-    color(C5,C10,C15,C25,C25).
+getSquares([X,Y]).
+getSquares([H1,H2,H3|T]):-
+    setColors(H1,H2,H3),
+    neighborBlack(H1,H2,H3),
+    %containsDuplicates([H1,H2,H3|T]),
+    getSquares([H2,H3|T]).
+    /*getSquares([H2|T]),
+    checkColor(H1,H2),
+    getSquares([H2|T]).*/
 
-    /*checkBoard(N1,N2,C1,C2),
-    checkBoard(N2,N3,C2,C3),
-    checkBoard(N3,N4,C3,C4),
-    checkBoard(N4,N5,C4,C5),
+runTests([]).
+runTests([H|T]):-
+    getSquares(H),
+    %reverse(H,RevH),
+    %getSquares(RevH),
+    runTests(T).
 
-    checkBoard(N6,N7,C6,C7),
-    checkBoard(N7,N8,C7,C8),
-    checkBoard(N8,N9,C8,C9),
-    checkBoard(N9,N10,C9,C10),
-    
-    checkBoard(N11,N12,C11,C12),
-    checkBoard(N12,N13,C12,C13),
-    checkBoard(N13,N14,C13,C14),
-    checkBoard(N14,N15,C14,C15),
-    
-    checkBoard(N16,N17,C16,C17),
-    checkBoard(N17,N18,C17,C18),
-    checkBoard(N18,N19,C18,C19),
-    checkBoard(N19,N20,C19,C20),
-    
-    checkBoard(N21,N22,C21,C22),
-    checkBoard(N22,N23,C22,C23),
-    checkBoard(N23,N24,C23,C24),
-    checkBoard(N24,N25,C24,C25).*/
+rowN([H|_],1,H):-!.
+rowN([_|T],I,X) :-
+    I1 is I-1,
+    rowN(T,I1,X).
+
+columnN([],_,[]).
+columnN([H|T], I, [R|X]):-
+   rowN(H, I, R), 
+columnN(T,I,X).
+
+getAllColumns(Size,_,N,[]):-
+	N>Size.
+getAllColumns(Size,SquareList,N,[H|T]):-
+	columnN(SquareList,N,H),
+	N1 is N+1,
+	getAllColumns(Size,SquareList,N1,T).
 
 checkAll(List):-
-    settingColor(List),
-    getRow(List),
-    write(List).
-
-
-
-checkColor([],[]).
-checkColor([H|T],[X|Y]):-
-    T=['Black'],Y=['White'];
-    T=['White'],Y=['Black'];
-    T=['White'],T=Y.
-
-checkNumbers([],[]).
-checkNumbers([H|T],[X|Y]):-
-    write(H).
-
-getSquares([X]).
-getSquares([H1,H2|T]):-
-    checkColor(H1,H2),
-    %checkNumbers(H1,H2),
-    getSquares([H2|T]).
-
-getRow([]).
-getRow([H|T]):-
-    getSquares(H),
-    getRow(T).
-
-color(A,B,C,D,E):-
-    member('Black',[A,B,C,D,E]),
-    member('White',[A,B,C,D,E]).
-
-checkBoard(A,B,C,D):-
-    A=B,C='Black',not(D='Black');%prøver å få til at 2 tall inntil hverandre ikke kan være black
-    A=B,C='White',not(D='White');
-    A=B,C='White',D='White';
-    A=B,not(C=D);
-    not(A=B),not(C=D);
-    not(A=B),C=D.
-
-    
+    getAllColumns(7,List,1,Cols),
+    (runTests(List);
+    runTests(Cols)),
+    getAllColumns(7,Cols,1,R),
+    write(R).
 
 run:-
     X=[[1,3,3,5,5],[4,1,5,3,2],[2,1,1,3,3],[5,3,4,1,4],[3,3,4,5,4]],
-    flatten(X,Flat),
-    addingVariable(Flat,L),
-    addingRow(L,R),
-    checkAll(R).
-    /*
-    addingRow(L,R),
-    settingColor(R).
-    getRow(R).*/
+    Y=[[1,4,1,5,6,5,4],[6,6,3,5,4,1,4],[5,3,3,1,2,1,6],[6,7,6,7,1,2,5],[4,4,7,2,2,6,6],[1,6,2,7,5,4,3],[7,7,5,2,4,5,2]],
+    parsingInput(Y,List,1),
+    checkAll(List).
