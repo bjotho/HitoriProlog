@@ -29,6 +29,12 @@ extractRow([H|T],[X|Y]):-
 getHead([H|_],R):-
     R=H.
 
+getColor([_,C|_],R):-
+    R=C.
+
+getIndex([_,_,I|_],R):-
+    R=I.
+
 /*
 twoPlusMany([X,Y|[H|T]]):-
     write('twoPlusMany'),nl,
@@ -74,6 +80,34 @@ columnN([H|T],I,[R|X]):-
 	rowN(H,I,R), 
 	columnN(T,I,X).
 
+threeInARow([X,Y,Z|_]):-
+getHead(X,S1),
+getHead(Y,S2),
+getHead(Z,S3),
+S1=S2,S2=S3,X=[_,'B',_],Y=[_,'W',_],Z=[_,'B',_].
+threeInARow([X,Y,Z|[H|T]]):-
+threeInARow([Y,Z,H|T]).
+
+setWhiteAroundBlack([X,Y,Z|_]):-
+getColor(X,CX),
+getColor(Y,CY),
+getColor(Z,CZ),
+(not(var(CX)),
+CX='B',CY='W');
+(not(var(CY)),
+CY='B',CX='W',CZ='W');
+(not(var(CZ)),
+CZ='B',CY='W').
+setWhiteAroundBlack([X,Y,Z|[H|T]]):-
+setWhiteAroundBlack([Y,Z,H|T]).
+
+checkTests([]).
+checkTests([H|T]):-
+    (setWhiteAroundBlack(H),
+    checkTests(T));
+    (setWhiteAroundBlack(H);
+    checkTests(T)).
+
 getAllColumns(Size,_,N,[]):-
 	N>Size.
 getAllColumns(Size,SquareList,N,[H|T]):-
@@ -84,11 +118,10 @@ getAllColumns(Size,SquareList,N,[H|T]):-
 doSolve(SizeX,SizeY,Input,Output):-
     /*parsingInput takes in a list (Input), and binds SquareList to a list of squares. Final parameter is the starting index*/
     %parsingInput(Input,SquareList,1),
-
-    ExampleUnsolved=[[[2,_,1],[2,_,2],[2,_,3],[4,_,4]],
-                     [[1,_,5],[4,_,6],[2,_,7],[3,_,8]],
-                     [[2,_,9],[3,_,10],[2,_,11],[1,_,12]],
-                     [[3,_,13],[4,_,14],[1,_,15],[2,_,16]]],
+	ExampleUnsolved=[[[2,'B',1],[2,_,2],[2,_,3],[4,_,4]],
+                     [[1,_,5],[4,'B',6],[2,_,7],[3,'B',8]],
+                     [[2,_,9],[3,_,10],[2,'B',11],[1,_,12]],
+                     [[3,_,13],[4,_,14],[1,_,15],[2,'B',16]]],
 
     checkxSomethingX(ExampleUnsolved),
     getAllColumns(4,ExampleUnsolved,1,Cols),
@@ -100,8 +133,9 @@ doSolve(SizeX,SizeY,Input,Output):-
     ExampleSolved=[[[2,'B',1],[2,'W',2],[2,'B',3],[4,'W',4]],
                    [[1,'W',5],[4,'W',6],[2,'W',7],[3,'W',8]],
                    [[2,'W',9],[3,'W',10],[2,'B',11],[1,'W',12]],
-                   [[3,'W',13],[4,'B',14],[1,'W',15],[2,'W',16]]],*/
-    formatOutput(BackToRows,Output).
+                   [[3,'W',13],[4,'B',14],[1,'W',15],[2,'W',16]]],
+    */
+    formatOutput(ExampleUnsolved,Output).
 
 /*doSolve(5,_,_,[[1,'X',3,'X',5],[4,1,5,3,2],[2,'X',1,'X',3],[5,3,'X',1,4],[3,'X',4,5,'X']]):-!.
 doSolve(7,_,_,[['X',4,1,'X',6,5,'X'],[6,'X',3,5,'X',1,4],[5,3,'X',1,2,'X',6],['X',7,6,'X',1,2,5],[4,'X',7,2,'X',6,'X'],[1,6,2,7,5,4,3],[7,'X',5,'X',4,'X',2]]):-!.*/
