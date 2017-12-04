@@ -52,7 +52,7 @@ containsDuplicates([H|T]):-
 xSomethingX([X,Y,Z|_]):-
 	getHead(X,S1),
 	getHead(Z,S2),
-    S1=S2,Y=[_,'B',_].
+    S1=S2,Y=[_,'W',_].
 xSomethingX([X,Y,Z|[H|T]]):-
     xSomethingX([Y,Z,H|T]).
 
@@ -61,8 +61,8 @@ getHead(X,S1),
 getHead(Y,S2),
 getHead(Z,S3),
 S1=S2,S2=S3,X=[_,'B',_],Y=[_,'W',_],Z=[_,'B',_].
-xSomethingX([X,Y,Z|[H|T]]):-
-xSomethingX([Y,Z,H|T]).
+threeInARow([X,Y,Z|[H|T]]):-
+threeInARow([Y,Z,H|T]).
 
 /*column([X,Y,Z|_]):-
     write('hei').*/
