@@ -49,11 +49,10 @@ twoPlusManyRev(L):-
     write('twoPlusManyRev'),nl,
     reverse(L,N),
     twoPlusMany(N).
-
+*/
 containsDuplicates([H|T]):-
     member(H,T),
     containsDuplicates(T).
-*/
 
 xSomethingX([X,Y,Z|_]):-
 	getHead(X,S1),
@@ -113,27 +112,16 @@ getAllColumns(Size,SquareList,N,[H|T]):-
 
 doSolve(SizeX,SizeY,Input,Output):-
     /*parsingInput takes in a list (Input), and binds SquareList to a list of squares. Final parameter is the starting index*/
-    %parsingInput(Input,SquareList,1),
-	ExampleUnsolved=[[[2,'B',1],[2,_,2],[2,_,3],[4,_,4]],
-                     [[1,_,5],[4,'B',6],[2,_,7],[3,'B',8]],
-                     [[2,_,9],[3,_,10],[2,'B',11],[1,_,12]],
-                     [[3,_,13],[4,_,14],[1,_,15],[2,'B',16]]],
+    parsingInput(Input,SquareList,1),
 
-    checkxSomethingX(ExampleUnsolved),
-    checkSurroundBlack(ExampleUnsolved),
-    getAllColumns(4,ExampleUnsolved,1,Cols),
+    checkxSomethingX(SquareList),
+    checkSurroundBlack(SquareList),
+    getAllColumns(SizeX,SquareList,1,Cols),
     checkxSomethingX(Cols),
     checkSurroundBlack(Cols),
-    getAllColumns(4,Cols,1,BackToRows),
-    print(BackToRows),
+    getAllColumns(SizeX,Cols,1,BackToRows),
 
     /*formatOutput takes in a solved hitori puzzle list and generates output in the desired format*/
-    /*
-    ExampleSolved=[[[2,'B',1],[2,'W',2],[2,'B',3],[4,'W',4]],
-                   [[1,'W',5],[4,'W',6],[2,'W',7],[3,'W',8]],
-                   [[2,'W',9],[3,'W',10],[2,'B',11],[1,'W',12]],
-                   [[3,'W',13],[4,'B',14],[1,'W',15],[2,'W',16]]],
-    */
     formatOutput(BackToRows,Output).
 
 /*doSolve(5,_,_,[[1,'X',3,'X',5],[4,1,5,3,2],[2,'X',1,'X',3],[5,3,'X',1,4],[3,'X',4,5,'X']]):-!.
