@@ -60,6 +60,52 @@ xSomethingX([X,Y,Z|_]):-
     S1=S2,Y=[_,'W',_].
 xSomethingX([_,Y,Z|[H|T]]):-
     xSomethingX([Y,Z,H|T]).
+<<<<<<< HEAD
+=======
+xSomethingX([X,Y,X]):-
+    Y=[_,'W'].
+
+checkTests([]).
+checkTests([H|T]):-
+    xSomethingX(H);
+    checkTests(T).
+
+checkColor([],[],5).
+checkColor([H1,H2,H3|T],[X1,X2,X3|Y],5):-
+    /*Check rows*/
+    H1=X1,
+    (H2='B',X2='W';
+    H2='W',X2='B';
+    H2='W',H2=X2);
+    not(H1=X1),
+    (H2='B',X2='W';
+    H2='W',X2='B';
+    H2='W',H2=X2).
+    /*Check columns*/
+
+checkRow([]).
+checkRow([[H|R]|T]):-
+    member(H,T);
+    checkRow([R|T]).
+    
+getSquares([X]).
+getSquares([H1,H2|T]):-
+    checkColor(H1,H2,5),
+    getSquares([H2|T]).
+
+getRow([]).
+getRow([H|T]):-
+    getSquares(H),
+    getRow(T).
+
+getCol([]).
+getCol([H|T]):-
+    write(H).
+
+checkAll(List):-
+    %getRow(List),
+    getCol(List).
+>>>>>>> Getting rows and columns
 
 rowN([H|_],1,H):-!.
 rowN([_|T],I,X):-
@@ -113,6 +159,7 @@ getAllColumns(Size,SquareList,N,[H|T]):-
 doSolve(SizeX,SizeY,Input,Output):-
     /*parsingInput takes in a list (Input), and binds SquareList to a list of squares. Final parameter is the starting index*/
     parsingInput(Input,SquareList,1),
+<<<<<<< HEAD
 
     checkxSomethingX(SquareList),
     checkSurroundBlack(SquareList),
@@ -120,6 +167,24 @@ doSolve(SizeX,SizeY,Input,Output):-
     checkxSomethingX(Cols),
     checkSurroundBlack(Cols),
     getAllColumns(SizeX,Cols,1,BackToRows),
+=======
+    checkAll(SquareList),
+    formatOutput(SquareList,Output),
+    write(Output).
+
+    /*formatOutput takes in a solved hitori puzzle list and generates output in the desired format*/
+    /*ExampleSolved=[[[2,'B',1],[2,'W',2],[2,'B',3],[4,'W',4]],
+                   [[1,'W',5],[4,'W',6],[2,'W',7],[3,'W',8]],
+                   [[2,'W',9],[3,'W',10],[2,'B',11],[1,'W',12]],
+                   [[3,'W',13],[4,'B',14],[1,'W',15],[2,'W',16]]],
+    formatOutput(ExampleSolved,Output).*/
+    %print(Output).
+    
+    %addingRow(L,SquareList),
+    %checkTests(SquareList),
+    %write(SquareList).
+    
+>>>>>>> Getting rows and columns
 
     /*formatOutput takes in a solved hitori puzzle list and generates output in the desired format*/
     formatOutput(BackToRows,Output).
