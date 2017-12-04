@@ -33,16 +33,17 @@ neighborBlack([H1,H2,H3],[X1,X2,X3],[Z1,Z2,Z3]):-
     H2='B',X2='W',Z2='W';
     H2='W',X2='W',Z2='W'.
 
-setColors([]).
-setColors([H|T]):-
-    (H=[_,'B',_];H=[_,'W',_]),
-    setColors(T).
+setColors([],[],[]).
+setColors([H1,H2,H3|T],[X1,X2,X3|Y],[Z1,Z2,Z3]):-
+    (H2='B';H2='W'),
+    (X2='B';X2='W'),
+    (Z2='B';Z2='W').
     
 getSquares([X,Y]).
 getSquares([H1,H2,H3|T]):-
-    setColors([H1,H2,H3|T]),
+    setColors(H1,H2,H3),
     neighborBlack(H1,H2,H3),
-    containsDuplicates([H1,H2,H3|T]),
+    %containsDuplicates([H1,H2,H3|T]),
     getSquares([H2,H3|T]).
     /*getSquares([H2|T]),
     checkColor(H1,H2),
@@ -51,6 +52,8 @@ getSquares([H1,H2,H3|T]):-
 runTests([]).
 runTests([H|T]):-
     getSquares(H),
+    %reverse(H,RevH),
+    %getSquares(RevH),
     runTests(T).
 
 rowN([H|_],1,H):-!.
@@ -71,13 +74,14 @@ getAllColumns(Size,SquareList,N,[H|T]):-
 	getAllColumns(Size,SquareList,N1,T).
 
 checkAll(List):-
-    getAllColumns(5,List,1,Cols),
-    runTests(List),
-    runTests(Cols),
-    getAllColumns(5,Cols,1,R),
-    print(R).
+    getAllColumns(7,List,1,Cols),
+    (runTests(List);
+    runTests(Cols)),
+    getAllColumns(7,Cols,1,R),
+    write(R).
 
 run:-
     X=[[1,3,3,5,5],[4,1,5,3,2],[2,1,1,3,3],[5,3,4,1,4],[3,3,4,5,4]],
-    parsingInput(X,List,1),
+    Y=[[1,4,1,5,6,5,4],[6,6,3,5,4,1,4],[5,3,3,1,2,1,6],[6,7,6,7,1,2,5],[4,4,7,2,2,6,6],[1,6,2,7,5,4,3],[7,7,5,2,4,5,2]],
+    parsingInput(Y,List,1),
     checkAll(List).
