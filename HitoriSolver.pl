@@ -1,7 +1,7 @@
 outputFile('./hitori_solved.txt').
 inputFile('./hitori_unsolved.txt').
 
-
+Attempted to run xSomethingX. It went horribly wrong :(
 parsingInput([],[],_).
 parsingInput([H|T],[X|Y],I):-
     addingSquares(H,X,I),
@@ -27,67 +27,64 @@ extractRow([H|T],[X|Y]):-
     X='X'),
     extractRow(T,Y).
 
-twoPlussMany([X,Y|[H|T]]):-
-    write('twoPlussMany'),nl,
-    write(X),write(' '),write(Y),write(' '),write(H),write(' '),write(T),nl,
+getHead([H|_],R):-
+    R=H.
+
+/*
+twoPlusMany([X,Y|[H|T]]):-
+    write('twoPlusMany'),nl,
     X=Y,
     not(X=H),
     list_to_set(T, S),
     write(S), nl,
     member(X,S),
-    twoPlussMany([Y,H|T]).
+    twoPlusMany([Y,H|T]).
 
-twoPlussManyRev(L):-
-    write('twoPlussManyRev'),nl,
+twoPlusManyRev(L):-
+    write('twoPlusManyRev'),nl,
     reverse(L,N),
-    twoPlussMany(N).
+    twoPlusMany(N).
 
 containsDuplicates([H|T]):-
     member(H,T),
     containsDuplicates(T).
+*/
 
-xSomethingX([X,Y,Z|[H|T]]):-
-    (X=Z,Y=[_,'W']);
-    xSomethingX([Y,Z,H|T]).
-xSomethingX([X,Y,X]):-
-    Y=[_,'W'].
+xSomethingX([X,Y,Z|[H|T]],[X1,Y1,Z1|[H1|T1]]):-
+    X1=X,
+    getHead(X,S1),
+    getHead(Z,S2),
+    S1=S2,Y1=[_,'W',_],
+    xSomethingX([Y,Z,H|T],[Y1,Z1,H1|T1]).
+xSomethingX([X,_,X],[X1,Y1,X1]):-
+    Y1=[_,'W',_].
+xSomethingX([_,_,_],_).
 
 checkTests([]).
-checkTests([H|T]):-
-    xSomethingX(H);
-    checkTests(T).
-
-settingColor([[N1,A],[N2,B],[N3,C],[N4,D],
-		      [N5,E],[N6,F],[N7,G],[N8,H],
-              [N9,I],[N10,J],[N11,K],[N12,L],
-              [N13,M],[N14,N],[N15,O],[N16,P]]):-
-    
-    color(A,B,C,D).
-
-
-color(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P):-
-    member('B',[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P]),
-    member('W',[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P]).
+checkTests([H|T],[X|Y]):-
+    xSomethingX(H,X);
+    checkTests(T,Y).
 
 
 doSolve(SizeX,SizeY,Input,Output):-
     /*parsingInput takes in a list (Input), and binds SquareList to a list of squares. Final parameter is the starting index*/
     %parsingInput(Input,SquareList,1),
-    %write(SquareList).
+
+    ExampleUnsolved=[[[2,_,1],[2,_,2],[2,_,3],[4,_,4]],
+                     [[1,_,5],[4,_,6],[2,_,7],[3,_,8]],
+                     [[2,_,9],[3,_,10],[2,_,11],[1,_,12]],
+                     [[3,_,13],[4,_,14],[1,_,15],[2,_,16]]],
+
+    checkTests(ExampleUnsolved,PostTests),
 
     /*formatOutput takes in a solved hitori puzzle list and generates output in the desired format*/
+    /*
     ExampleSolved=[[[2,'B',1],[2,'W',2],[2,'B',3],[4,'W',4]],
                    [[1,'W',5],[4,'W',6],[2,'W',7],[3,'W',8]],
                    [[2,'W',9],[3,'W',10],[2,'B',11],[1,'W',12]],
                    [[3,'W',13],[4,'B',14],[1,'W',15],[2,'W',16]]],
-    formatOutput(ExampleSolved,Output).
-    %print(Output).
     
-    %addingRow(L,SquareList),
-    %checkTests(SquareList),
-    %write(SquareList).
-    
-
+ 
 
 /*doSolve(5,_,_,[[1,'X',3,'X',5],[4,1,5,3,2],[2,'X',1,'X',3],[5,3,'X',1,4],[3,'X',4,5,'X']]):-!.
 doSolve(7,_,_,[['X',4,1,'X',6,5,'X'],[6,'X',3,5,'X',1,4],[5,3,'X',1,2,'X',6],['X',7,6,'X',1,2,5],[4,'X',7,2,'X',6,'X'],[1,6,2,7,5,4,3],[7,'X',5,'X',4,'X',2]]):-!.*/
