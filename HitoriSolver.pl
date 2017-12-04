@@ -62,14 +62,6 @@ xSomethingX([X,Y,Z|_]):-
 xSomethingX([_,Y,Z|[H|T]]):-
     xSomethingX([Y,Z,H|T]).
 
-
-checkxSomethingX([]).
-checkxSomethingX([H|T]):-
-    (xSomethingX(H),
-    checkxSomethingX(T));
-    (xSomethingX(H);
-    checkxSomethingX(T)).
-
 rowN([H|_],1,H):-!.
 rowN([_|T],I,X):-
     I1 is I-1,
@@ -81,31 +73,36 @@ columnN([H|T],I,[R|X]):-
 	columnN(T,I,X).
 
 threeInARow([X,Y,Z|_]):-
-getHead(X,S1),
-getHead(Y,S2),
-getHead(Z,S3),
-S1=S2,S2=S3,X=[_,'B',_],Y=[_,'W',_],Z=[_,'B',_].
-threeInARow([X,Y,Z|[H|T]]):-
-threeInARow([Y,Z,H|T]).
+	getHead(X,S1),
+	getHead(Y,S2),
+	getHead(Z,S3),
+	S1=S2,S2=S3,X=[_,'B',_],Y=[_,'W',_],Z=[_,'B',_].
+threeInARow([_,Y,Z|[H|T]]):-
+	threeInARow([Y,Z,H|T]).
 
-setWhiteAroundBlack([X,Y,Z|_]):-
-getColor(X,CX),
-getColor(Y,CY),
-getColor(Z,CZ),
-(not(var(CX)),
-CX='B',CY='W');
-(not(var(CY)),
-CY='B',CX='W',CZ='W');
-(not(var(CZ)),
-CZ='B',CY='W').
-setWhiteAroundBlack([X,Y,Z|[H|T]]):-
-setWhiteAroundBlack([Y,Z,H|T]).
+surroundBlack([X,Y,Z|_]):-
+	getColor(X,CX),
+	getColor(Y,CY),
+	getColor(Z,CZ),
+	((nonvar(CX),
+	CX='B',CY='W');
+	(nonvar(CY),
+	CY='B',CX='W',CZ='W');
+	(nonvar(CZ),
+	CZ='B',CY='W')).
+surroundBlack([_,Y,Z|[H|T]]):-
+	surroundBlack([Y,Z,H|T]).
 
 checkTests([]).
 checkTests([H|T]):-
-    (setWhiteAroundBlack(H),
+	(xSomethingX(H),
     checkTests(T));
-    (setWhiteAroundBlack(H);
+    (xSomethingX(H);
+    checkTests(T)).
+checkTests([H|T]):-
+    (surroundBlack(H),
+    checkTests(T));
+    (surroundBlack(H);
     checkTests(T)).
 
 getAllColumns(Size,_,N,[]):-
@@ -123,9 +120,9 @@ doSolve(SizeX,SizeY,Input,Output):-
                      [[2,_,9],[3,_,10],[2,'B',11],[1,_,12]],
                      [[3,_,13],[4,_,14],[1,_,15],[2,'B',16]]],
 
-    checkxSomethingX(ExampleUnsolved),
+    checkTests(ExampleUnsolved),
     getAllColumns(4,ExampleUnsolved,1,Cols),
-    checkxSomethingX(Cols),
+    checkTests(Cols),
     getAllColumns(4,Cols,1,BackToRows),
 
     /*formatOutput takes in a solved hitori puzzle list and generates output in the desired format*/
@@ -135,7 +132,7 @@ doSolve(SizeX,SizeY,Input,Output):-
                    [[2,'W',9],[3,'W',10],[2,'B',11],[1,'W',12]],
                    [[3,'W',13],[4,'B',14],[1,'W',15],[2,'W',16]]],
     */
-    formatOutput(ExampleUnsolved,Output).
+    formatOutput(BackToRows,Output).
 
 /*doSolve(5,_,_,[[1,'X',3,'X',5],[4,1,5,3,2],[2,'X',1,'X',3],[5,3,'X',1,4],[3,'X',4,5,'X']]):-!.
 doSolve(7,_,_,[['X',4,1,'X',6,5,'X'],[6,'X',3,5,'X',1,4],[5,3,'X',1,2,'X',6],['X',7,6,'X',1,2,5],[4,'X',7,2,'X',6,'X'],[1,6,2,7,5,4,3],[7,'X',5,'X',4,'X',2]]):-!.*/
