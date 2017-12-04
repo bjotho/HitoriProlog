@@ -57,8 +57,6 @@ adjacentValue([X,X|_]).
 adjacentValue([X,Y|[H|T]]):-
 	adjacentValue([Y,H|T]).
 
-/*PUSH*/
-
 xSomethingX([X,Y,Z|_]):-
 	getHead(X,S1),
 	getHead(Z,S2),
