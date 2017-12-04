@@ -36,14 +36,13 @@ getIndex([_,_,I|_],R):-
     R=I.
 
 getSquareByIndex([H|T],I,S):-
-	getSquare(H,I,S);
-	getSquareByIndex(T,I,S).
+	getSquare(H,I,S1),
+	getSquareByIndex(T,I,S1).
 
 getSquare([],_).
 getSquare([H|T],I,S):-
-	(getIndex(H,I),
-	S=H);
-	getSquare(T,I,S).
+	getIndex(H,I);
+	getSquare(T,H).
 
 twoPlusMany([X,Y|[H|T]]):-
     write('twoPlusMany'),nl,
