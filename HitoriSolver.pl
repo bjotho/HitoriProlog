@@ -35,11 +35,17 @@ getColor([_,C|_],R):-
 getIndex([_,_,I|_],R):-
     R=I.
 
+getSquareByIndex([H|_],I,S):-
+	H=[_,_,I],
+	S=H.
+getSquareByIndex([_|T],I,S):-
+	getSquareByIndex(T,I,S).
+
 twoPlusMany([X,Y|[H|T]]):-
     write('twoPlusMany'),nl,
     X=Y,
     not(X=H),
-    list_to_set(T, S),
+    list_to_set(T,S),
     write(S), nl,
     member(X,S),
     twoPlusMany([Y,H|T]).
@@ -54,7 +60,7 @@ checkDuplicates([H|T]):-
     checkDuplicates(T).
 
 adjacentValue([X,X|_]).
-adjacentValue([X,Y|[H|T]]):-
+adjacentValue([_,Y|[H|T]]):-
 	adjacentValue([Y,H|T]).
 
 xSomethingX([X,Y,Z|_]):-
@@ -155,15 +161,24 @@ doSolve(7,_,_,[['X',4,1,'X',6,5,'X'],[6,'X',3,5,'X',1,4],[5,3,'X',1,2,'X',6],['X
 doSolve(SizeX,SizeY,Input,Output):-
     /*parsingInput takes in a list (Input), and binds SquareList to a list of squares. Final parameter is the starting index*/
     parsingInput(Input,SquareList1,1),
+
+    getSquareByIndex(SquareList1,7,S),
+    print(S),
+
     checkxSomethingX(SquareList1),
     checkSurroundBlack(SquareList1),
+
     getAllColumns(SizeX,SquareList1,1,SquareListInverted1),
+
     checkxSomethingX(SquareListInverted1),
     checkSurroundBlack(SquareListInverted1),
+
     getAllColumns(SizeX,SquareListInverted1,1,SquareList2),
     getAllColumns(SizeX,SquareList2,1,SquareListInverted2),
+
     (runBruteForce(SquareList2);
     runBruteForce(SquareListInverted2)),
+
     getAllColumns(SizeX,SquareListInverted2,1,SquareList3),
 
     /*formatOutput takes in a solved hitori puzzle list and generates output in the desired format*/
