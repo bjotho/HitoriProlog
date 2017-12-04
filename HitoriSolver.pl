@@ -49,15 +49,24 @@ twoPlusManyRev(L):-
     write('twoPlusManyRev'),nl,
     reverse(L,N),
     twoPlusMany(N).
+
+checkDuplicates(SquareList,Input):-
+	checkDuplicatesRow(SquareList,Input),
+	checkDuplicatesCol(SquareList,Input).
+
+checkDuplicatesRow([H|T],[X|Y]):-
+	checkDuplicatesList(H,X),
+    checkDuplicatesRow(T,Y).
 */
-containsDuplicates([H|T]):-
-    member(H,T),
-    containsDuplicates(T).
+
+
+%checkDuplicatesList([H|T],L):-
+
 
 xSomethingX([X,Y,Z|_]):-
 	getHead(X,S1),
 	getHead(Z,S2),
-    S1=S2,Y=[_,'W',_].
+    S1=S2,Y=[_,'W'|_].
 xSomethingX([_,Y,Z|[H|T]]):-
     xSomethingX([Y,Z,H|T]).
 
@@ -75,7 +84,7 @@ threeInARow([X,Y,Z|_]):-
 	getHead(X,S1),
 	getHead(Y,S2),
 	getHead(Z,S3),
-	S1=S2,S2=S3,X=[_,'B',_],Y=[_,'W',_],Z=[_,'B',_].
+	S1=S2,S2=S3,X=[_,'B'|_],Y=[_,'W'|_],Z=[_,'B'|_].
 threeInARow([_,Y,Z|[H|T]]):-
 	threeInARow([Y,Z,H|T]).
 
@@ -115,10 +124,15 @@ doSolve(SizeX,SizeY,Input,Output):-
     parsingInput(Input,SquareList,1),
 
     checkxSomethingX(SquareList),
+    %checkDuplicates(SquareList,Input),
     checkSurroundBlack(SquareList),
+
     getAllColumns(SizeX,SquareList,1,Cols),
+
     checkxSomethingX(Cols),
+	%checkDuplicates(Cols,Input),
     checkSurroundBlack(Cols),
+
     getAllColumns(SizeX,Cols,1,BackToRows),
 
     /*formatOutput takes in a solved hitori puzzle list and generates output in the desired format*/
