@@ -14,68 +14,68 @@ addingSquares([H|T],[X|Y],I):-
 getHead([H|_],R):-
     R=H.
 
+getColor([H1,H2,H3],R):-
+    R=H2.
 
+containsDuplicates([]).
+containsDuplicates([H|T]):-
+    getHead(H,R),
+    (member([R,'W',_],T),H=[_,'B',_];
+    member([R,'B',_],T),H=[_,'W',_];
+    not(member([R,_,_],T)),H=[_,'W',_]),
+    containsDuplicates(T).
 
-addColor([]).
-addColor([H|T]):-
-    member('Black',H);
-    member('White',H),
-    addColor(T).
+neighborBlack([],[],[]).
+neighborBlack([H1,H2,H3],[X1,X2,X3],[Z1,Z2,Z3]):-
+    H2='W',X2='B',Z2='W';
+    H2='W',X2='W',Z2='B';
+    H2='B',X2='W',Z2='B';
+    H2='B',X2='W',Z2='W';
+    H2='W',X2='W',Z2='W'.
 
-checkColor([],[]).
-checkColor([H1,H2,H3|T],[X1,X2,X3|Y]):-
-    /*Check rows*/
-    H1=X1,
-    (H2='Black',X2='White';
-    H2='White',X2='Black';
-    H2='White',H2=X2);
-    not(H1=X1),
-    (H2='Black',X2='White';
-    H2='White',X2='Black';
-    H2='White',H2=X2).
-    /*Check columns*/
-
-checkRow([]).
-checkRow([[H|R]|T]):-
-    member(H,T);
-    checkRow([R|T]).
+setColors([]).
+setColors([H|T]):-
+    (H=[_,'B',_];H=[_,'W',_]),
+    setColors(T).
     
-getSquares([X]).
-getSquares([H1,H2|T]):-
+getSquares([X,Y]).
+getSquares([H1,H2,H3|T]):-
+    setColors([H1,H2,H3|T]),
+    neighborBlack(H1,H2,H3),
+    containsDuplicates([H1,H2,H3|T]),
+    getSquares([H2,H3|T]).
+    /*getSquares([H2|T]),
     checkColor(H1,H2),
-    getSquares([H2|T]).
+    getSquares([H2|T]).*/
 
-getRow([]).
-getRow([H|T]):-
-    addColor(H),
-    write(List),
+runTests([]).
+runTests([H|T]):-
     getSquares(H),
-    getRow(T).
+    runTests(T).
 
 rowN([H|_],1,H):-!.
 rowN([_|T],I,X) :-
     I1 is I-1,
     rowN(T,I1,X).
 
-columnN([],[],[]).
+columnN([],_,[]).
 columnN([H|T], I, [R|X]):-
    rowN(H, I, R), 
 columnN(T,I,X).
 
-checkBoard([],5,Result).
-checkBoard(List,5,Result):-
-    rowN(List,5,R),
-    checkColor(R,RColor),
-    columnN(List,5,C),
-    checkColor(C,Ccolor),
-    N1=N-1,
-    checkBoard(List,N1,Result).
+getAllColumns(Size,_,N,[]):-
+	N>Size.
+getAllColumns(Size,SquareList,N,[H|T]):-
+	columnN(SquareList,N,H),
+	N1 is N+1,
+	getAllColumns(Size,SquareList,N1,T).
 
 checkAll(List):-
-    write(List),
-    checkBoard(List,5,R),
-    write(R).
-    %getRow(List).
+    getAllColumns(5,List,1,Cols),
+    runTests(List),
+    runTests(Cols),
+    getAllColumns(5,Cols,1,R),
+    print(R).
 
 run:-
     X=[[1,3,3,5,5],[4,1,5,3,2],[2,1,1,3,3],[5,3,4,1,4],[3,3,4,5,4]],
