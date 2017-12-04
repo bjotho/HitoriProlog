@@ -35,14 +35,6 @@ getColor([_,C|_],R):-
 getIndex([_,_,I|_],R):-
     R=I.
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-/*
-=======
-
->>>>>>> Added bruteForce, almost working
->>>>>>> e35965dda07237b8e9c599e91cc617957dac8dc3
 twoPlusMany([X,Y|[H|T]]):-
     write('twoPlusMany'),nl,
     X=Y,
@@ -56,17 +48,8 @@ twoPlusManyRev(L):-
     write('twoPlusManyRev'),nl,
     reverse(L,N),
     twoPlusMany(N).
-<<<<<<< HEAD
 
 checkDuplicates([H|T]):-
-=======
-<<<<<<< HEAD
-*/
-=======
-
->>>>>>> Added bruteForce, almost working
-containsDuplicates([H|T]):-
->>>>>>> e35965dda07237b8e9c599e91cc617957dac8dc3
     member(H,T),
     checkDuplicates(T).
 
@@ -74,63 +57,15 @@ adjacentValue([X,X|_]).
 adjacentValue([X,Y|[H|T]]):-
 	adjacentValue([Y,H|T]).
 
+/*PUSH*/
+
 xSomethingX([X,Y,Z|_]):-
 	getHead(X,S1),
 	getHead(Z,S2),
     S1=S2,Y=[_,'W'|_].
 xSomethingX([_,Y,Z|[H|T]]):-
     xSomethingX([Y,Z,H|T]).
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-xSomethingX([X,Y,X]):-
-    Y=[_,'W'].
 
-checkTests([]).
-checkTests([H|T]):-
-    xSomethingX(H);
-    checkTests(T).
-
-checkColor([],[],5).
-checkColor([H1,H2,H3|T],[X1,X2,X3|Y],5):-
-    /*Check rows*/
-    H1=X1,
-    (H2='B',X2='W';
-    H2='W',X2='B';
-    H2='W',H2=X2);
-    not(H1=X1),
-    (H2='B',X2='W';
-    H2='W',X2='B';
-    H2='W',H2=X2).
-    /*Check columns*/
-
-checkRow([]).
-checkRow([[H|R]|T]):-
-    member(H,T);
-    checkRow([R|T]).
-    
-getSquares([X]).
-getSquares([H1,H2|T]):-
-    checkColor(H1,H2,5),
-    getSquares([H2|T]).
-
-getRow([]).
-getRow([H|T]):-
-    getSquares(H),
-    getRow(T).
-
-getCol([]).
-getCol([H|T]):-
-    write(H).
-
-checkAll(List):-
-    %getRow(List),
-    getCol(List).
->>>>>>> Getting rows and columns
-
-=======
-
->>>>>>> Added bruteForce, almost working
 rowN([H|_],1,H):-!.
 rowN([_|T],I,X):-
     I1 is I-1,
@@ -179,7 +114,6 @@ getAllColumns(Size,SquareList,N,[H|T]):-
 	columnN(SquareList,N,H),
 	N1 is N+1,
 	getAllColumns(Size,SquareList,N1,T).
-<<<<<<< HEAD
 
 containsDuplicates([]).
 containsDuplicates([H|T]):-
@@ -222,7 +156,6 @@ doSolve(7,_,_,[['X',4,1,'X',6,5,'X'],[6,'X',3,5,'X',1,4],[5,3,'X',1,2,'X',6],['X
 
 doSolve(SizeX,SizeY,Input,Output):-
     /*parsingInput takes in a list (Input), and binds SquareList to a list of squares. Final parameter is the starting index*/
-<<<<<<< HEAD
     parsingInput(Input,SquareList1,1),
     checkxSomethingX(SquareList1),
     checkSurroundBlack(SquareList1),
@@ -237,94 +170,6 @@ doSolve(SizeX,SizeY,Input,Output):-
 
     /*formatOutput takes in a solved hitori puzzle list and generates output in the desired format*/
     formatOutput(SquareList3,Output).
-=======
-    parsingInput(Input,SquareList,1),
-<<<<<<< HEAD
-
-    checkxSomethingX(SquareList),
-    checkSurroundBlack(SquareList),
-    getAllColumns(SizeX,SquareList,1,Cols),
-    checkxSomethingX(Cols),
-    checkSurroundBlack(Cols),
-    getAllColumns(SizeX,Cols,1,BackToRows),
-=======
-    checkAll(SquareList),
-    formatOutput(SquareList,Output),
-    write(Output).
-
-    /*formatOutput takes in a solved hitori puzzle list and generates output in the desired format*/
-    /*ExampleSolved=[[[2,'B',1],[2,'W',2],[2,'B',3],[4,'W',4]],
-                   [[1,'W',5],[4,'W',6],[2,'W',7],[3,'W',8]],
-                   [[2,'W',9],[3,'W',10],[2,'B',11],[1,'W',12]],
-                   [[3,'W',13],[4,'B',14],[1,'W',15],[2,'W',16]]],
-    formatOutput(ExampleSolved,Output).*/
-    %print(Output).
-    
-    %addingRow(L,SquareList),
-    %checkTests(SquareList),
-    %write(SquareList).
-    
->>>>>>> Getting rows and columns
-
-    /*formatOutput takes in a solved hitori puzzle list and generates output in the desired format*/
-    formatOutput(BackToRows,Output).
-=======
-
-containsDuplicates([]).
-containsDuplicates([H|T]):-
-    getHead(H,R),
-    (member([R,'W',_],T),H=[_,'B',_];
-    member([R,'B',_],T),H=[_,'W',_];
-    not(member([R,_,_],T)),H=[_,'W',_]),
-    containsDuplicates(T).
-
-neighborBlack([],[],[]).
-neighborBlack([H1,H2,H3],[X1,X2,X3],[Z1,Z2,Z3]):-
-    H2='W',X2='B',Z2='W';
-    H2='W',X2='W',Z2='B';
-    H2='B',X2='W',Z2='B';
-    H2='B',X2='W',Z2='W';
-    H2='W',X2='W',Z2='W'.
-
-setColors([],[],[]).
-setColors([H1,H2,H3|T],[X1,X2,X3|Y],[Z1,Z2,Z3]):-
-    (H2='B';H2='W'),
-    (X2='B';X2='W'),
-    (Z2='B';Z2='W').
-    
-getSquareList([X,Y]).
-getSquareList([H1,H2,H3|T]):-
-    setColors(H1,H2,H3),
-    neighborBlack(H1,H2,H3),
-    containsDuplicates([H1,H2,H3|T]),
-    getSquareList([H2,H3|T]).
-
-runBruteForce([]).
-runBruteForce([H|T]):-
-    getSquareList(H),
-    %reverse(H,RevH),
-    %getSquareList(RevH),
-    runBruteForce(T).
-
-doSolve(SizeX,SizeY,Input,Output):-
-    /*parsingInput takes in a list (Input), and binds SquareList to a list of squares. Final parameter is the starting index*/
-    parsingInput(Input,SquareList1,1),
-    checkxSomethingX(SquareList1),
-    checkSurroundBlack(SquareList1),
-    getAllColumns(SizeX,SquareList1,1,SquareListInverted1),
-    checkxSomethingX(SquareListInverted1),
-    checkSurroundBlack(SquareListInverted1),
-    getAllColumns(SizeX,SquareListInverted1,1,SquareList2),
-    getAllColumns(SizeX,SquareList2,1,SquareListInverted2),
-    (runBruteForce(SquareList2);
-    runBruteForce(SquareListInverted2)),
-    getAllColumns(SizeX,SquareListInverted2,1,SquareList3),
-
-    /*formatOutput takes in a solved hitori puzzle list and generates output in the desired format*/
-    formatOutput(SquareList3,Output).
->>>>>>> Added bruteForce, almost working
-
->>>>>>> e35965dda07237b8e9c599e91cc617957dac8dc3
 
 doSolve(_,_,Solution,Solution).
 
