@@ -29,6 +29,12 @@ extractRow([H|T],[X|Y]):-
 getHead([H|_],R):-
     R=H.
 
+getColor([_,C|_],R):-
+    R=C.
+
+getIndex([_,_,I|_],R):-
+    R=I.
+
 /*
 twoPlusMany([X,Y|[H|T]]):-
     write('twoPlusMany'),nl,
@@ -64,14 +70,27 @@ S1=S2,S2=S3,X=[_,'B',_],Y=[_,'W',_],Z=[_,'B',_].
 threeInARow([X,Y,Z|[H|T]]):-
 threeInARow([Y,Z,H|T]).
 
+setWhiteAroundBlack([X,Y,Z|_]):-
+getColor(X,CX),
+getColor(Y,CY),
+getColor(Z,CZ),
+(not(var(CX)),
+CX='B',CY='W');
+(not(var(CY)),
+CY='B',CX='W',CZ='W');
+(not(var(CZ)),
+CZ='B',CY='W').
+setWhiteAroundBlack([X,Y,Z|[H|T]]):-
+setWhiteAroundBlack([Y,Z,H|T]).
+
 /*column([X,Y,Z|_]):-
     write('hei').*/
 
 checkTests([]).
 checkTests([H|T]):-
-    (threeInARow(H),
+    (setWhiteAroundBlack(H),
     checkTests(T));
-    (threeInARow(H);
+    (setWhiteAroundBlack(H);
     checkTests(T)).
 
 
@@ -79,10 +98,10 @@ doSolve(SizeX,SizeY,Input,Output):-
     /*parsingInput takes in a list (Input), and binds SquareList to a list of squares. Final parameter is the starting index*/
     %parsingInput(Input,SquareList,1),
 
-    ExampleUnsolved=[[[2,_,1],[2,_,2],[2,_,3],[4,_,4]],
-                     [[1,_,5],[4,_,6],[2,_,7],[3,_,8]],
-                     [[2,_,9],[3,_,10],[2,_,11],[1,_,12]],
-                     [[3,_,13],[4,_,14],[1,_,15],[2,_,16]]],
+    ExampleUnsolved=[[[2,'B',1],[2,_,2],[2,_,3],[4,_,4]],
+                     [[1,_,5],[4,'B',6],[2,_,7],[3,'B',8]],
+                     [[2,_,9],[3,_,10],[2,'B',11],[1,_,12]],
+                     [[3,_,13],[4,_,14],[1,_,15],[2,'B',16]]],
 
     checkTests(ExampleUnsolved),
 
