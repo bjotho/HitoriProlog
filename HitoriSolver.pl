@@ -21,7 +21,7 @@ formatOutput([H|T],[X|Y]):-
 
 extractRow([],[]).
 extractRow([H|T],[X|Y]):-
-    ((H=[V,'W',_],
+    ((H=[V,'W'|_],
     X=V);
     X='X'),
     extractRow(T,Y).
@@ -80,30 +80,29 @@ threeInARow([X,Y,Z|_]):-
 threeInARow([_,Y,Z|[H|T]]):-
 	threeInARow([Y,Z,H|T]).
 
-surroundBlack([X,Y,Z|_]):-
+surroundBlack([X,Y|_]):-
 	getColor(X,CX),
 	getColor(Y,CY),
-	getColor(Z,CZ),
 	((nonvar(CX),
 	CX='B',CY='W');
 	(nonvar(CY),
-	CY='B',CX='W',CZ='W');
-	(nonvar(CZ),
-	CZ='B',CY='W')).
-surroundBlack([_,Y,Z|[H|T]]):-
-	surroundBlack([Y,Z,H|T]).
+	CY='B',CX='W')).
+surroundBlack([_,Y|[H|T]]):-
+	surroundBlack([Y,H|T]).
 
-checkTests([]).
-checkTests([H|T]):-
-	(xSomethingX(H),
-    checkTests(T));
+checkxSomethingX([]).
+checkxSomethingX([H|T]):-
+    (xSomethingX(H),
+    checkxSomethingX(T));
     (xSomethingX(H);
-    checkTests(T)).
-checkTests([H|T]):-
+    checkxSomethingX(T)).
+
+checkSurroundBlack([]).
+checkSurroundBlack([H|T]):-
     (surroundBlack(H),
-    checkTests(T));
+    checkSurroundBlack(T));
     (surroundBlack(H);
-    checkTests(T)).
+    checkSurroundBlack(T)).
 
 getAllColumns(Size,_,N,[]):-
 	N>Size.
@@ -120,10 +119,13 @@ doSolve(SizeX,SizeY,Input,Output):-
                      [[2,_,9],[3,_,10],[2,'B',11],[1,_,12]],
                      [[3,_,13],[4,_,14],[1,_,15],[2,'B',16]]],
 
-    checkTests(ExampleUnsolved),
+    checkxSomethingX(ExampleUnsolved),
+    checkSurroundBlack(ExampleUnsolved),
     getAllColumns(4,ExampleUnsolved,1,Cols),
-    checkTests(Cols),
+    checkxSomethingX(Cols),
+    checkSurroundBlack(Cols),
     getAllColumns(4,Cols,1,BackToRows),
+    print(BackToRows),
 
     /*formatOutput takes in a solved hitori puzzle list and generates output in the desired format*/
     /*
